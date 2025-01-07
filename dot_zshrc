@@ -1,0 +1,92 @@
+# alias
+
+alias ll='eza --icons -lah'
+alias llt='eza --icons -lah -T -L2'
+alias ls='eza --icons'
+
+# fzf
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_OPTS="--height=80%"
+
+gswt() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git switch $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+gpls() {
+  local pr_number
+  pr_number='echo {} | xargs | cut -f 1 -d " "'
+  view_pr_web="$pr_number | xargs gh pr view"
+
+  gh pr list |
+    fzf --no-multi --ansi \
+      --preview "$pr_number | xargs gh pr view" \
+      --bind "alt-s:execute($pr_number | xargs gh pr checkout)+abort" \
+      --bind "enter:execute($pr_number | xargs gh pr view --web)"
+}
+
+alias glNoGraph='git log --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr% C(auto)%an" "$@"'
+_gitLogLineToHash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1"
+_viewGitLogLine="$_gitLogLineToHash | xargs -I % sh -c 'git show --color=always % | diff-so-fancy'"
+
+glog() {
+	glNoGraph |
+		fzf --no-sort --reverse --tiebreak=index --no-multi \
+			--ansi --preview="$_viewGitLogLine" \
+			--header "enter to view, alt-y to copy hash" \
+			--bind "enter:execute:$_viewGitLogLine   | less -R" \
+			--bind "alt-y:execute:$_gitLogLineToHash | pbcopy"
+}
+
+gst() {
+	local diff="echo {} | xargs | cut -f 2 -d ' ' | xargs -I % sh -c 'git diff % | diff-so-fancy'" &&
+	git status -s |
+		fzf --no-sort --tiebreak=index --no-multi --ansi --preview="$diff" \
+		--header "enter to view" \
+		--bind "enter:execute:$diff | less -R"
+}
+
+grb() {
+	local commits commit
+	commits=$(git log --color=always --pretty=oneline --abbrev-commit --reverse) &&
+	commit=$(echo "$commits" | fzf --tac +s +m -e --ansi --reverse) &&
+	git rebase -i $(echo "$commit" | awk '{print $1}')
+}
+
+gad() {
+  local diff
+  diff='echo {} | xargs | cut -f 2 -d " " | xargs -I % sh -c "git diff % | diff-so-fancy"'
+
+  git diff --name-status |
+    awk '{print $2}' |
+    fzf -m --no-sort --ansi \
+    --preview="$diff" | \
+    xargs git add
+}
+
+# ghq
+
+fzf-github-src() {
+  local selected_dir=$(ghq list -p | fzf)
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N fzf-github-src
+bindkey '^G' fzf-github-src
+
+# snippet
+
+show_snippets() {
+  local snippets=$(cat ~/zsh_snippet | fzf | cut -d ':' -f 2-)
+  LBUFFER="${LBUFFER}${snippets}"
+  zle reset-prompt
+}
+zle -N show_snippets
+bindkey '^o' show_snippets
