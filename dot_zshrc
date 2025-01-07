@@ -1,4 +1,8 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
+# Zsh
+
+autoload -U compinit
+compinit
 
 # alias
 
