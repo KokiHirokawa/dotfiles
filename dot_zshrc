@@ -6,6 +6,7 @@ alias cat='bat'
 alias ll='eza --icons -lah'
 alias llt='eza --icons -lah -T -L2'
 alias ls='eza --icons'
+alias relogin='exec $SHELL -l'
 
 # fzf
 
