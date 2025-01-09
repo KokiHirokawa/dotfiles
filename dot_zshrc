@@ -10,6 +10,7 @@ compinit
 # alias
 
 alias cat='bat'
+alias hex='hexyl'
 alias ll='eza --icons -lah'
 alias llt='eza --icons -lah -T -L2'
 alias ls='eza --icons'
