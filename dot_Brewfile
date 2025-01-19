@@ -3,6 +3,7 @@ tap "heroku/brew"
 tap "homebrew/autoupdate"
 tap "homebrew/bundle"
 tap "ynqa/tap"
+tap "xcodesorg/made"
 brew "actionlint"
 brew "pycparser"
 brew "cffi"
@@ -62,6 +63,7 @@ brew "starship"
 brew "tree"
 brew "wabt"
 brew "wget"
+brew "xcodes"
 brew "xh"
 brew "zlib"
 brew "go-task/tap/go-task"
@@ -76,10 +78,8 @@ cask "notion-calendar"
 cask "obsidian"
 cask "raycast"
 cask "stats"
-mas "Developer", id: 640199958
 mas "GarageBand", id: 682658836
 mas "GIPHY CAPTURE", id: 668208984
-mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
 mas "Kindle Classic", id: 405399194
 mas "LINE", id: 539883307
