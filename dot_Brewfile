@@ -15,7 +15,6 @@ brew "aom"
 brew "autoconf"
 brew "bat"
 brew "glib"
-brew "chezmoi"
 brew "circleci"
 brew "coreutils"
 brew "curl"
@@ -76,6 +75,7 @@ cask "notion-calendar"
 cask "obsidian"
 cask "raycast"
 cask "stats"
+cask "warp"
 mas "GarageBand", id: 682658836
 mas "GIPHY CAPTURE", id: 668208984
 mas "Keynote", id: 409183694
