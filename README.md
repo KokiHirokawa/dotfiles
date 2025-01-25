@@ -7,5 +7,6 @@ pihero's dotfiles.
 Using chezmoi.
 
 ```bash
-sudo sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /usr/local/bin init --apply KokiHirokawa
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply KokiHirokawa
+sudo mv bin/chezmoi /usr/local/bin
 ```
