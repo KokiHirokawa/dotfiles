@@ -1,0 +1,47 @@
+#!/bin/bash
+
+{{ if eq .chezmoi.os "darwin" -}}
+configure_dock () {
+    defaults write com.apple.dock orientation left # 画面上の位置
+    defaults write com.apple.dock tilesize -int 40 # サイズ
+    defaults write com.apple.dock magnification -bool true # 拡大 ON/OFF
+    defaults write com.apple.dock largesize -int 60 # 拡大サイズ
+    defaults write com.apple.dock autohide -bool true # Dock を自動的に表示/非表示
+    defaults write com.apple.dock show-process-indicators -bool false # 起動済みのアプリケーションにインジケータを表示
+    defaults write com.apple.dock show-recents -bool false # 最近使ったアプリケーションを Dock に表示
+    defaults write com.apple.dock static-only -boolean true # 起動済みのアプリケーションのみ Dock に表示
+    defaults write com.apple.dock minimize-to-application -bool false # ウインドウをアプリケーションアイコンにしまうか、別のアイコンとしてしまうか
+    defaults write com.apple.dock mineffect -string "genie" # ウインドウをしまうときのエフェクト
+}
+
+configure_keyboard () {
+    defaults write -g InitialKeyRepeat -int 15 # リピート入力認識までの時間
+    defaults write -g KeyRepeat -int 2 # キーのリピート速度
+    defaults write -g NSAutomaticCapitalizationEnabled -bool false # 文頭を自動的に大文字にする
+    defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false # スペースバーを2回押してピリオドを入力
+    defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false # 英字入力中にスペルを自動変換
+}
+
+configure_trackpad () {
+    defaults write -g com.apple.trackpad.scaling -float 1.5 # Tracking speed
+    defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true # Tap to click
+    defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true # Tap to click
+}
+
+configure_menubar () {
+    defaults write com.apple.controlcenter.plist "NSStatusItem Visible Bluetooth" -bool true # Bluetooth をメニューバーに表示
+    defaults write com.apple.menuextra.clock.plist ShowDate -bool true # 日付を常に表示
+}
+
+echo "🚀 Setup user defaults..."
+configure_dock
+configure_keyboard
+configure_trackpad
+configure_menubar
+
+for app in "Dock" \
+	"Finder" \
+	"SystemUIServer"; do
+	killall "${app}" &>/dev/null
+done
+{{ end -}}
