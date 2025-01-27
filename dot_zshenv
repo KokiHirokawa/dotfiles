@@ -11,3 +11,8 @@ export SAVEHIST=10000
 
 # PATH
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# Load machine-specific config
+if [[ -f ~/.zshenv.local ]]; then
+	source ~/.zshenv.local
+fi
