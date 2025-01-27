@@ -20,7 +20,7 @@
 [push]
     default = current
 [ghq]
-    root = /Users/pihero/Documents
+    root = ~/Documents
 [core]
     editor = vim
 [pull]
