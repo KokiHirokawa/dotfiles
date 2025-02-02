@@ -12,6 +12,9 @@ success_symbol = '[➜](bold green)'
 [package]
 disabled = true
 
+[git_status]
+disabled = true
+
 # Palette definitions
 [palettes.catppuccin_macchiato]
 rosewater = "#f4dbd6"
