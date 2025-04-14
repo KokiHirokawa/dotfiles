@@ -83,6 +83,7 @@ cask "stats"
 cask "warp"
 cask "windsurf"
 cask "github-copilot-for-xcode"
+cask "obsidian"
 mas "GarageBand", id: 682658836
 mas "GIPHY CAPTURE", id: 668208984
 mas "Keynote", id: 409183694
