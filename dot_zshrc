@@ -1,6 +1,7 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(starship init zsh)"
 eval "$(sheldon source)"
+eval "$(rbenv init - --no-rehash zsh)"
 
 # Zsh
 
