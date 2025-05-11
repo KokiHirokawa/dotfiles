@@ -1,5 +1,8 @@
 export XDG_CONFIG_HOME="$HOME/.config"
 
+# nvm
+export NVM_DIR="$HOME/.config/nvm"
+
 # Homebrew
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_BUNDLE_FILE="$HOME/.Brewfile"

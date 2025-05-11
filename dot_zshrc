@@ -8,6 +8,10 @@ eval "$(rbenv init - --no-rehash zsh)"
 autoload -U compinit
 compinit
 
+# nvm
+
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
 # alias
 
 alias cat='bat'
