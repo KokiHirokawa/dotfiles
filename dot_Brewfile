@@ -99,3 +99,11 @@ mas "Pages", id: 409201541
 mas "Playgrounds", id: 1496833156
 mas "Slack", id: 803453959
 mas "TestFlight", id: 899247664
+
+# Browser
+
+cask "arc"
+cask "brave-browser"
+cask "google-chrome"
+cask "firefox"
+cask "vivaldi"
