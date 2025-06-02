@@ -106,3 +106,8 @@ cask "arc"
 cask "brave-browser"
 cask "google-chrome"
 cask "firefox"
+
+# dotfiles
+
+brew "chezmoi"
+
