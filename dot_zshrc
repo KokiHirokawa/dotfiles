@@ -5,8 +5,10 @@ eval "$(rbenv init - --no-rehash zsh)"
 
 # Zsh
 
-autoload -U compinit
-compinit
+fpath=(path/to/zsh-completions/src $fpath)
+autoload -Uz compinit && compinit
+
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # nvm
 
