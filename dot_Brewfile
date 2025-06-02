@@ -111,3 +111,7 @@ cask "zen"
 
 brew "chezmoi"
 
+# terminals
+
+cask "warp"
+# cask "wave"
