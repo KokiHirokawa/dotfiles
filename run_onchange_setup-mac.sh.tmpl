@@ -33,6 +33,10 @@ configure_menubar () {
     defaults write com.apple.menuextra.clock.plist ShowDate -bool true # 日付を常に表示
 }
 
+configure_finder () {
+    defaults write com.apple.finder AppleShowAllFiles TRUE # 隠しファイルを表示
+}
+
 echo "🚀 Setup user defaults..."
 configure_dock
 configure_keyboard
