@@ -1,22 +1,8 @@
 [user]
     name = KokiHirokawa
     email = 19641837+KokiHirokawa@users.noreply.github.com
-[alias]
-    st = status
-    co = checkout
-    nb = checkout -b
-    b = branch
-    l = log
-    lo = log --oneline
-    ci = commit
-    gr = log --graph --date=short --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
-    difff = diff --word-diff
-    cp = cherry-pick
-    sp = stash pop
-    ss = stash save
-    rn = branch -m
-    d = branch -D
-    su = submodule update --init --recursive
+[include]
+    path = ~/.config/git/gitalias.txt
 [push]
     default = current
 [ghq]
