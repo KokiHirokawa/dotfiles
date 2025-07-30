@@ -99,15 +99,16 @@ gw() {
   local delete="dir=\$(echo '$worktrees' | grep '{}' | awk '{print \$1}') && echo 'Removing worktree {}...' && git worktree remove --force {} && rm -rf \$dir"
   local reload="git worktree list | sed 's/.*\[\(.*\)\].*/\1/'"
   
-  local create_new="echo 'Enter branch name: ' && read branch_name && \
+  local create_new="echo -n 'Enter branch name: ' > /dev/tty && \
+    read branch_name && \
     worktree_dir=\"$worktree_base_dir/\$branch_name\" && \
     mkdir -p \$(dirname \"\$worktree_dir\") && \
     git worktree add -b \$branch_name \"\$worktree_dir\" && \
-    echo \"Created branch \$branch_name in directory \$worktree_dir\""
+    echo \"Created branch \$branch_name in directory \$worktree_dir\" > /dev/tty"
   
   local branch=$(echo "$branches" | fzf --preview="$preview" --prompt="Select worktree: " \
     --bind="d:execute($delete)+reload($reload)" \
-    --bind="n:execute($create_new)+abort")
+    --bind="n:become($create_new)")
   
   [[ -z "$branch" ]] && return 0
 
