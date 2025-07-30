@@ -103,12 +103,12 @@ gw() {
     read branch_name && \
     worktree_dir=\"$worktree_base_dir/\$branch_name\" && \
     mkdir -p \$(dirname \"\$worktree_dir\") && \
-    git worktree add -b \$branch_name \"\$worktree_dir\" && \
+    git worktree add -b \$branch_name \"\$worktree_dir\" > /dev/null && \
     echo \"Created branch \$branch_name in directory \$worktree_dir\" > /dev/tty"
   
   local branch=$(echo "$branches" | fzf --preview="$preview" --prompt="Select worktree: " \
-    --bind="d:execute($delete)+reload($reload)" \
-    --bind="n:become($create_new)")
+    --bind="ctrl-d:execute($delete)+reload($reload)" \
+    --bind="ctrl-n:become($create_new)")
   
   [[ -z "$branch" ]] && return 0
 
