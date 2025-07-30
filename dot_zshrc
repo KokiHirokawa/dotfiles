@@ -91,6 +91,7 @@ gad() {
 }
 
 gw() {
+  local worktree_base_dir="${GIT_WORKTREE_DIR:-.git/worktree}"
   local worktrees=$(git worktree list)
   local branches=$(echo "$worktrees" | sed 's/.*\[\(.*\)\].*/\1/')
   local preview="echo '$worktrees' | grep '{}' | awk '{print \$1}'"
@@ -98,9 +99,16 @@ gw() {
   local delete="dir=\$(echo '$worktrees' | grep '{}' | awk '{print \$1}') && echo 'Removing worktree {}...' && git worktree remove --force {} && rm -rf \$dir"
   local reload="git worktree list | sed 's/.*\[\(.*\)\].*/\1/'"
   
+  local create_new="echo 'Enter branch name: ' && read branch_name && \
+    worktree_dir=\"$worktree_base_dir/\$branch_name\" && \
+    mkdir -p \$(dirname \"\$worktree_dir\") && \
+    git worktree add -b \$branch_name \"\$worktree_dir\" && \
+    echo \"Created branch \$branch_name in directory \$worktree_dir\""
+  
   local branch=$(echo "$branches" | fzf --preview="$preview" --prompt="Select worktree: " \
-    --bind="d:execute($delete)+reload($reload)")
-
+    --bind="d:execute($delete)+reload($reload)" \
+    --bind="n:execute($create_new)+abort")
+  
   [[ -z "$branch" ]] && return 0
 
   local dir=$(echo "$worktrees" | grep "\[$branch\]" | awk '{print $1}')
