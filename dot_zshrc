@@ -94,7 +94,12 @@ gw() {
   local worktrees=$(git worktree list)
   local branches=$(echo "$worktrees" | sed 's/.*\[\(.*\)\].*/\1/')
   local preview="echo '$worktrees' | grep '{}' | awk '{print \$1}'"
-  local branch=$(echo "$branches" | fzf --preview="$preview" --prompt="Select worktree: ")
+  
+  local delete="dir=\$(echo '$worktrees' | grep '{}' | awk '{print \$1}') && echo 'Removing worktree {}...' && git worktree remove --force {} && rm -rf \$dir"
+  local reload="git worktree list | sed 's/.*\[\(.*\)\].*/\1/'"
+  
+  local branch=$(echo "$branches" | fzf --preview="$preview" --prompt="Select worktree: " \
+    --bind="d:execute($delete)+reload($reload)")
 
   [[ -z "$branch" ]] && return 0
 
