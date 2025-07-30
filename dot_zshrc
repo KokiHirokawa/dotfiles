@@ -91,7 +91,7 @@ gad() {
 }
 
 gw() {
-  local worktree_base_dir="${GIT_WORKTREE_DIR:-.git/worktree}"
+  local worktree_base_dir="$(git rev-parse --git-common-dir)/worktree"
   local worktrees=$(git worktree list)
   local branches=$(echo "$worktrees" | sed 's/.*\[\(.*\)\].*/\1/')
   local preview="echo '$worktrees' | grep '{}' | awk '{print \$1}'"
