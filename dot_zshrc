@@ -97,7 +97,7 @@ gw() {
 
   local preview="echo '$worktrees' | grep '\[{}\]' | awk '{print \$1}'"
 
-  local delete="dir=\$(echo '$worktrees' | grep '\[{}\]' | awk '{print \$1}') && git worktree remove --force \$dir && rm -rf \$dir"
+  local delete="dir=\$(echo '$worktrees' | grep '\[{}\]' | awk '{print \$1}') && rm -rf \$dir && git worktree prune && git branch -D {}"
 
   local reload="git worktree list | sed 's/.*\[\(.*\)\].*/\1/'"
 
