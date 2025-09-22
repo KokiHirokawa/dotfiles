@@ -93,13 +93,30 @@ gad() {
 gw() {
   local worktree_base_dir="$(git rev-parse --git-common-dir)/worktree"
   local worktrees=$(git worktree list)
-  local branches=$(echo "$worktrees" | sed 's/.*\[\(.*\)\].*/\1/')
+  local worktree_branches=$(echo "$worktrees" | sed 's/.*\[\(.*\)\].*/\1/')
 
-  local preview="echo '$worktrees' | grep '\[{}\]' | awk '{print \$1}'"
+  local remote_branches=$(git branch -r --format='remotes/%(refname:short)' | grep -v 'HEAD')
 
-  local delete="dir=\$(echo '$worktrees' | grep '\[{}\]' | awk '{print \$1}') && rm -rf \$dir && git worktree prune && git branch -D {}"
+  local all_branches=$(
+    echo "$worktree_branches"
+    echo "$remote_branches"
+  )
 
-  local reload="git worktree list | sed 's/.*\[\(.*\)\].*/\1/'"
+  local preview="git log --oneline -15 $(echo {} | sed 's/remotes\///')"
+
+  local delete="
+    worktree_info=\$(git worktree list | grep '\[{}\]')
+    if [[ -n \"\$worktree_info\" ]]; then
+      dir=\$(echo \"\$worktree_info\" | awk '{print \$1}')
+      rm -rf \"\$dir\" && git worktree prune && git branch -D {}
+    fi
+  "
+
+  local reload="
+    worktree_branches=\$(git worktree list | sed 's/.*\[\(.*\)\].*/\1/')
+    remote_br=\$(git branch -r --format='remotes/%(refname:short)' | grep -v 'HEAD')
+    (echo \"\$worktree_branches\"; echo \"\$remote_br\") | grep -v '^$'
+  "
 
   local create_new="echo -n 'Enter branch name: ' > /dev/tty && \
     read branch_name && \
@@ -108,19 +125,23 @@ gw() {
     git worktree add -b \$branch_name \"\$worktree_dir\" > /dev/null && \
     echo \"Created branch \$branch_name in directory \$worktree_dir\" > /dev/tty"
 
-  local branch=$(echo "$branches" | fzf --preview="$preview" --prompt="Select worktree: " \
+  local selected=$(echo "$all_branches" | grep -v '^$' | fzf --preview="$preview" --prompt="Select branch: " \
     --bind="ctrl-d:execute-silent($delete)+reload($reload)" \
     --bind="ctrl-n:become($create_new)")
   
-  [[ -z "$branch" ]] && return 0
+  [[ -z "$selected" ]] && return 0
 
-  local dir=$(echo "$worktrees" | grep "\[$branch\]" | awk '{print $1}')
+  if [[ "$selected" == remotes/origin/* ]]; then
+    local local_branch_name=$(echo "$selected" | sed 's|remotes/origin/||')
+    local worktree_dir="$worktree_base_dir/$local_branch_name"
 
-  if [[ -d "$dir" ]]; then
-    cd "$dir" && echo "Switched to branch '$branch' in directory '$dir'"
+    mkdir -p "$(dirname "$worktree_dir")"
+    git worktree add -b "$local_branch_name" "$worktree_dir" "$selected" > /dev/null
+    cd "$worktree_dir" && echo "Created branch '$local_branch_name' from '$selected' in directory '$worktree_dir'"
+
   else
-    echo "Error: Directory '$dir' not found"
-    return 1
+    local dir=$(echo "$worktrees" | grep "\[$selected\]" | awk '{print $1}')
+    cd "$dir" && echo "Switched to branch '$selected' in directory '$dir'"
   fi
 }
 
