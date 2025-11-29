@@ -1,0 +1,46 @@
+name: Claude PC Environment Improvements
+
+on:
+  workflow_dispatch:
+
+jobs:
+  claude-suggest-improvements:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            REPO: ${{ github.repository }}
+
+            Please analyze this dotfiles repository and suggest improvements to make this PC environment better and more convenient.
+
+            Look for opportunities to:
+            - Add useful shell aliases or functions
+            - Improve shell configuration (zsh, bash, etc.)
+            - Suggest new tools or utilities that would be beneficial
+            - Optimize existing configurations
+            - Add helpful git aliases or configurations
+            - Improve terminal experience
+            - Suggest productivity enhancements
+
+            After analyzing the repository:
+            1. Create a new branch for your improvements
+            2. Implement ONE meaningful improvement
+            3. Create a pull request with a clear description of the benefit
+
+            Use your Bash tool with git and gh commands to create the branch and PR.
+
+          claude_args: '--allowed-tools "Bash(git:*),Bash(gh pr:*)"'
+
