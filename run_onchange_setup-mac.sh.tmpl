@@ -48,4 +48,14 @@ for app in "Dock" \
 	"SystemUIServer"; do
 	killall "${app}" &>/dev/null
 done
+
+# Install safe-chain for package security
+echo "🔒 Installing Aikido Safe Chain..."
+if command -v npm &>/dev/null; then
+    npm install -g @aikidosec/safe-chain
+    safe-chain setup
+    echo "✅ Aikido Safe Chain installed successfully"
+else
+    echo "⚠️  npm not found. Skipping safe-chain installation."
+fi
 {{ end -}}
