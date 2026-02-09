@@ -14,6 +14,7 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # nvm
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # alias
 
@@ -167,3 +168,7 @@ show_snippets() {
 }
 zle -N show_snippets
 bindkey '^o' show_snippets
+
+# .zshrc.local
+
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
