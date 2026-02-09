@@ -19,7 +19,6 @@ brew "autoconf"
 brew "bat"
 brew "glib"
 brew "chisel"
-brew "circleci"
 brew "coreutils"
 brew "curl"
 brew "diff-so-fancy"
@@ -77,60 +76,21 @@ brew "uv"
 brew "libevent"
 brew "utf8proc"
 brew "tmux"
-cask "chatgpt"
-cask "charles"
 cask "ghostty"
 cask "hammerspoon"
-cask "notion"
-cask "notion-calendar"
 cask "obsidian"
 cask "raycast"
 cask "stats"
-cask "warp"
-cask "windsurf"
-cask "github-copilot-for-xcode"
-cask "obsidian"
-cask "anki"
-mas "GarageBand", id: 682658836
-mas "GIPHY CAPTURE", id: 668208984
-mas "Keynote", id: 409183694
-mas "Kindle Classic", id: 405399194
-mas "LINE", id: 539883307
 mas "Magnet", id: 441258766
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "Playgrounds", id: 1496833156
-mas "TestFlight", id: 899247664
 
 # Zsh
 
 brew "zsh-completions"
 brew "zsh-autosuggestions"
 
-# browsers
-
-cask "arc"
-cask "brave-browser"
-cask "google-chrome"
-cask "firefox"
-cask "zen"
-
 # dotfiles
 
 brew "chezmoi"
-
-# terminals
-
-cask "warp"
-# cask "wave"
-
-# IDE
-
-cask "visual-studio-code"
-
-# AI
-
-cask "claude"
 
 # Others
 
